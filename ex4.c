@@ -58,6 +58,7 @@ void draw(obj *head, int count, int *result, int k){
     obj *current = head;
     obj *previous = head;
 
+//印出來
     if (count == 0){
         printResult(result, k);
         return;
