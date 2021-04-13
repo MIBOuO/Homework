@@ -5,8 +5,8 @@
 typedef struct obj obj;
 struct obj{
     int value;
-    obj *next;
-    obj *remain;
+    obj *next;      //linked list 建置好next就不會再變動
+    obj *remain;    //a b c, b被取走後，a的remain就會指到c, 但是a的next仍是指向b
 };
 
 void draw(obj *, int, int *, int);
@@ -24,7 +24,7 @@ int main(){
         printf("k should be no more than n");
         return 0;
     }
-    int *result = malloc(k*sizeof(int));
+    int *result = malloc(k*sizeof(int));    //用來放排組的結果
 
 //build linked list with n elements
     obj *head, *current;   
@@ -58,19 +58,21 @@ void draw(obj *head, int count, int *result, int k){
     obj *current = head;
     obj *previous = head;
 
-//印出來
+    //取完指定數目就印出來
     if (count == 0){
         printResult(result, k);
         return;
     }
+
+    //走訪從head開始的每個元素，依序取出放入result, 再用遞迴走訪剩下的其他元素
     while(current != NULL){
-        *(result+k-count) = current->value;
+        *(result+k-count) = current->value; 
 
         if(current == head){
             draw(head->remain, count-1, result, k);
         }
         else{
-            previous->remain = current->remain;
+            previous->remain = current->remain; //取出current
             draw(head, count-1, result, k);
         }
         reset(head);
@@ -79,6 +81,7 @@ void draw(obj *head, int count, int *result, int k){
     }
 }
 
+//把取走的元素插回來，以利進行下一種排列組合
 void reset(obj *current){
     while(current != NULL){
         current->remain = current->next;
@@ -86,6 +89,7 @@ void reset(obj *current){
     }
 }
 
+//印結果
 void printResult(int *result, int size){
     if (check(result, size)){
         for (int i = 0; i < size; i++){
@@ -98,6 +102,7 @@ void printResult(int *result, int size){
     }
 }
 
+//確保元素不重複
 int check(int *a, int size){
     for (int i = 0; i < size-1; i++)
         for (int j = i + 1; j < size; j++) 
