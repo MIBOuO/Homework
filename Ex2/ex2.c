@@ -13,14 +13,14 @@ typedef struct studentscore
 	int score;
 }ss;
 
-// Driver program
+
 int main ()
 {
     ss input;
 	ss *data = NULL;
     int n = 0;
 	
-	// Open person.dat for reading
+
 	FILE *infile = fopen ("unsorted_studentscore", "r");
     FILE *outfile = fopen("sorted_studentscore", "w");
 	if (infile == NULL || outfile == NULL){
